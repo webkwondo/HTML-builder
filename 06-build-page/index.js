@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { readdir, mkdir, copyFile } = require('fs/promises');
+const { readdir, mkdir, copyFile, rm } = require('fs/promises');
 const { Readable } = require('stream');
 const path = require('path');
 
@@ -42,18 +42,29 @@ function getFileName(templateStr) {
 
 async function pipeFileAsync(readableStream, writable, callback) {
   readableStream.setEncoding('utf8');
+  let lastChunk = '';
 
   if (typeof writable === 'string') {
     let data = writable;
 
     for await (const chunk of readableStream) {
+      lastChunk = chunk;
       data += chunk;
+    }
+
+    if (lastChunk.slice(-1) !== '\r\n') {
+      data += '\r\n';
     }
 
     return data;
   } else {
     for await (const chunk of readableStream) {
+      lastChunk = chunk;
       writable.write(chunk);
+    }
+
+    if (lastChunk.slice(-1) !== '\r\n') {
+      writable.write('\r\n');
     }
 
     if (callback) {
@@ -165,5 +176,4 @@ async function buildHtml(templatePath, templatePartsPath, regexp) {
   });
 
   wStream.end();
-
 })();

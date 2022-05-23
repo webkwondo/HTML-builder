@@ -24,9 +24,15 @@ async function mergeFiles(srcDirPath, destPath) {
 
     const readableFileStream = fs.createReadStream(srcPath);
     readableFileStream.setEncoding('utf8');
+    let lastChunk = '';
 
     for await (const chunk of readableFileStream) {
+      lastChunk = chunk;
       writableFileStream.write(chunk);
+    }
+
+    if (lastChunk.slice(-1) !== '\r\n') {
+      writableFileStream.write('\r\n');
     }
   }
 
