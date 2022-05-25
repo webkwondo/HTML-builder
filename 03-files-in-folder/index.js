@@ -10,7 +10,8 @@ async function getFilesInfo(dir) {
     const p = path.join(dir, file.name);
 
     if (file.isDirectory()) {
-      return await getFilesInfo(p);
+      return null;
+      // return await getFilesInfo(p);
     };
 
     let { base, ext, name } = path.parse(p);
@@ -25,7 +26,7 @@ async function getFilesInfo(dir) {
     return [name, ext.slice(1), fileSize].join(' - ');
   });
 
-  return (await Promise.all(paths)).flat(Infinity).join('\n');
+  return (await Promise.all(paths)).flat(Infinity).filter((i) => i).join('\n');
 }
 
 getFilesInfo(dirPath)

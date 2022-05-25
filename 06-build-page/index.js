@@ -165,8 +165,8 @@ async function removeDir(dirPath) {
 }
 
 (async function() {
-  // Специально закомментирован вызов функции удаления папки перед записью файлов. Это связано с тем, что при работе Live Server (VS Code) может возникать конфликт прав доступа/записи/удаления файлов и папок (ENOTEMPTY). При отключении Live Server (и включенном вызове удаления папки перед записью файлов) ошибок не возникает.
-  // await removeDir(destDirPath);
+  // Специально был закомментирован вызов функции удаления папки перед записью файлов. Это связано с тем, что при работе Live Server (VS Code) может возникать конфликт прав доступа/записи/удаления файлов и папок (ENOTEMPTY). При отключении Live Server (и включенном вызове удаления папки перед записью файлов) ошибок не возникает.
+  await removeDir(destDirPath);
   await createDir(destDirPath);
 
   mergeFiles(sourceStylesDirPath, destStylesFilePath, stylesExtention)
