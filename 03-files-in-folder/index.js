@@ -12,7 +12,7 @@ async function getFilesInfo(dir) {
     if (file.isDirectory()) {
       return null;
       // return await getFilesInfo(p);
-    };
+    }
 
     let { base, ext, name } = path.parse(p);
 
